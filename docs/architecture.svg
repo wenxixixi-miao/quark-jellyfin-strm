@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" font-family="WenQuanYi Zen Hei, DejaVu Sans, sans-serif">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="1600" fill="#020617"/>
+  <rect width="1200" height="1600" fill="url(#grid)"/>
+
+  <text x="600" y="64" text-anchor="middle" font-size="38" font-weight="700" fill="#e2e8f0">网盘 → 家庭影院 · 数据流逻辑图</text>
+  <text x="600" y="102" text-anchor="middle" font-size="19" fill="#94a3b8">夸克 · OpenList · nginx · Jellyfin　｜　视频字节 0 字节经过服务器</text>
+
+  <!-- 服务器边界 -->
+  <rect x="80" y="150" width="620" height="900" rx="14" fill="rgba(120,53,15,0.10)" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="104" y="182" font-size="17" fill="#fbbf24">你的服务器 · 1 核 1.6G（框内才占你的资源）</text>
+
+  <!-- ===== 入库链（实线） ===== -->
+  <!-- A 追更脚本 -->
+  <rect x="110" y="190" width="560" height="90" rx="8" fill="#0f172a"/>
+  <rect x="110" y="190" width="560" height="90" rx="8" fill="rgba(30,41,59,0.55)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="132" y="222" font-size="21" font-weight="700" fill="#e2e8f0">追更脚本（服务器 cron，每 10 分钟）</text>
+  <text x="132" y="247" font-size="14" fill="#cbd5e1">官方接口 saveas-update：增量存回原目录，不删旧</text>
+  <text x="132" y="269" font-size="14" fill="#94a3b8">只追「上次存进过我们目录」的分享</text>
+
+  <!-- B OpenList -->
+  <rect x="110" y="316" width="560" height="100" rx="8" fill="#0f172a"/>
+  <rect x="110" y="316" width="560" height="100" rx="8" fill="rgba(6,78,59,0.42)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="132" y="350" font-size="22" font-weight="700" fill="#d1fae5">OpenList · 门面</text>
+  <text x="132" y="375" font-size="14" fill="#6ee7b7">QuarkTV 驱动 + webdav_policy=302_redirect</text>
+  <text x="132" y="398" font-size="14" fill="#6ee7b7">只列目录、只回跳转，从不搬运字节</text>
+
+  <!-- C 生成器 -->
+  <rect x="110" y="452" width="560" height="115" rx="8" fill="#0f172a"/>
+  <rect x="110" y="452" width="560" height="115" rx="8" fill="rgba(76,29,149,0.40)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="132" y="486" font-size="22" font-weight="700" fill="#ede9fe">strm 生成器</text>
+  <text x="132" y="511" font-size="14" fill="#c4b5fd">tmdb_auto_map → plan_strm → make_strm*</text>
+  <text x="132" y="534" font-size="14" fill="#c4b5fd">产出 .strm（一行 URL）+ .nfo（元数据），每条几十字节</text>
+  <text x="132" y="556" font-size="14" fill="#a78bfa">新目录自动对 TMDB：标题一致 + 年份／集号校验</text>
+
+  <!-- D strm_sync -->
+  <rect x="110" y="603" width="560" height="115" rx="8" fill="#0f172a"/>
+  <rect x="110" y="603" width="560" height="115" rx="8" fill="rgba(76,29,149,0.28)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="132" y="637" font-size="22" font-weight="700" fill="#ede9fe">strm_sync.py · 总调度</text>
+  <text x="132" y="662" font-size="14" fill="#c4b5fd">内容级 diff：URL 没变就一个字节都不动</text>
+  <text x="132" y="685" font-size="14" fill="#c4b5fd">保护式删除 + 播放中的剧跳过 + 有变化才通知扫库</text>
+  <text x="132" y="707" font-size="14" fill="#a78bfa">随后重写 map 表并 reload nginx</text>
+
+  <!-- E Jellyfin -->
+  <rect x="110" y="754" width="560" height="130" rx="8" fill="#0f172a"/>
+  <rect x="110" y="754" width="560" height="130" rx="8" fill="rgba(8,51,68,0.45)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="132" y="788" font-size="22" font-weight="700" fill="#cffafe">Jellyfin · 127.0.0.1:8096</text>
+  <text x="132" y="813" font-size="14" fill="#a5f3fc">扫库 / 刮 TMDB / 海报 / 播放进度 / 续播</text>
+  <text x="132" y="836" font-size="14" fill="#a5f3fc">视频转码全关：客户端要吃转码就直接报错</text>
+  <text x="132" y="859" font-size="14" fill="#22d3ee">每条内容有自己的 item id → 交给 map 表用</text>
+
+  <!-- F nginx -->
+  <rect x="110" y="900" width="560" height="130" rx="8" fill="#0f172a"/>
+  <rect x="110" y="900" width="560" height="130" rx="8" fill="rgba(136,19,55,0.40)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="132" y="934" font-size="22" font-weight="700" fill="#ffe4e6">nginx · 跳板（播放请求先到这里）</text>
+  <text x="132" y="959" font-size="14" fill="#fecdd3">① 免认证只读前缀 → OpenList /dav/（只放 GET/HEAD）</text>
+  <text x="132" y="982" font-size="14" fill="#fecdd3">② map 表：/Videos/&lt;item id&gt;/stream → 夸克直链</text>
+  <text x="132" y="1005" font-size="14" fill="#fb7185">③ 命中就 return 302，视频永远不进这台机器</text>
+
+  <!-- ===== 右侧：服务器外 ===== -->
+  <!-- 夸克网盘 -->
+  <rect x="730" y="316" width="400" height="130" rx="8" fill="#0f172a"/>
+  <rect x="730" y="316" width="400" height="130" rx="8" fill="rgba(120,53,15,0.30)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="752" y="350" font-size="22" font-weight="700" fill="#fde68a">夸克网盘 · 内容源</text>
+  <text x="752" y="375" font-size="14" fill="#fcd34d">自动转存 / 来自：分享 两个根目录</text>
+  <text x="752" y="398" font-size="14" fill="#fcd34d">内容与字节都在这儿，服务器只是索引它</text>
+  <text x="752" y="421" font-size="14" fill="#fbbf24">播放直链约 3 小时过期 → 不能写死</text>
+
+  <!-- 客户端 -->
+  <rect x="730" y="850" width="400" height="110" rx="8" fill="#0f172a"/>
+  <rect x="730" y="850" width="400" height="110" rx="8" fill="rgba(30,41,59,0.55)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="752" y="884" font-size="21" font-weight="700" fill="#e2e8f0">客户端 · 爆米花 / Infuse</text>
+  <text x="752" y="909" font-size="14" fill="#cbd5e1">点播只发一个小请求要「这一集在哪」</text>
+  <text x="752" y="932" font-size="14" fill="#94a3b8">拿到 302 后自己去 CDN 拉画面</text>
+
+  <!-- 夸克 CDN -->
+  <rect x="730" y="1060" width="400" height="120" rx="8" fill="#0f172a"/>
+  <rect x="730" y="1060" width="400" height="120" rx="8" fill="rgba(120,53,15,0.30)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="752" y="1094" font-size="22" font-weight="700" fill="#fde68a">夸克 CDN · 字节</text>
+  <text x="752" y="1119" font-size="14" fill="#fcd34d">302 落到这里，剩下的全是 CDN 的活</text>
+  <text x="752" y="1142" font-size="14" fill="#fcd34d">带宽、并发、限速都跟你的服务器无关</text>
+  <text x="752" y="1165" font-size="14" fill="#fbbf24">这就是「0 字节经过服务器」的落点</text>
+
+  <!-- ===== 箭头：入库（实线） ===== -->
+  <path d="M 670 235 H 800 V 312" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-slate)"/>
+  <text x="812" y="272" font-size="13" fill="#94a3b8">saveas-update</text>
+
+  <line x1="730" y1="356" x2="674" y2="356" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-slate)"/>
+  <text x="606" y="345" font-size="13" fill="#94a3b8" text-anchor="end">WebDAV 列目录</text>
+
+  <line x1="390" y1="416" x2="390" y2="448" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-slate)"/>
+  <text x="404" y="436" font-size="13" fill="#94a3b8">目录树 + 集号</text>
+
+  <line x1="390" y1="567" x2="390" y2="599" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-slate)"/>
+  <text x="404" y="587" font-size="13" fill="#94a3b8">写临时目录 → diff</text>
+
+  <line x1="390" y1="718" x2="390" y2="750" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-slate)"/>
+  <text x="404" y="738" font-size="13" fill="#94a3b8">POST /Library/Refresh</text>
+
+  <line x1="390" y1="884" x2="390" y2="896" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-amber)"/>
+  <text x="404" y="893" font-size="12" fill="#fbbf24">item id → map 表</text>
+
+  <!-- ===== 箭头：播放（虚线 cyan） ===== -->
+  <line x1="730" y1="910" x2="678" y2="910" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#arrow-cyan)"/>
+  <text x="702" y="884" font-size="12" fill="#22d3ee" text-anchor="middle">点播请求</text>
+
+  <path d="M 670 990 H 800 V 1056" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="7,4" marker-end="url(#arrow-cyan)"/>
+  <text x="812" y="1024" font-size="14" font-weight="700" fill="#22d3ee">302 Location</text>
+
+  <path d="M 1130 1060 C 1180 1040 1180 980 1130 958" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="7,4" marker-end="url(#arrow-cyan)"/>
+  <text x="1188" y="1010" font-size="13" fill="#22d3ee" transform="rotate(90 1188 1010)" text-anchor="middle">字节直发播放器</text>
+
+  <!-- ===== 底部数字卡 ===== -->
+  <rect x="80" y="1215" width="320" height="130" rx="10" fill="rgba(8,51,68,0.35)" stroke="#22d3ee" stroke-width="1.2"/>
+  <text x="104" y="1267" font-size="34" font-weight="700" fill="#67e8f9">1608 集</text>
+  <text x="104" y="1297" font-size="14" fill="#a5f3fc">媒体库里全是文本</text>
+  <text x="104" y="1319" font-size="14" fill="#a5f3fc">全部加起来十几 MB</text>
+
+  <rect x="430" y="1215" width="320" height="130" rx="10" fill="rgba(6,78,59,0.35)" stroke="#34d399" stroke-width="1.2"/>
+  <text x="454" y="1267" font-size="34" font-weight="700" fill="#6ee7b7">1 核 1.6G</text>
+  <text x="454" y="1297" font-size="14" fill="#a7f3d0">Jellyfin 常驻 130–280MB</text>
+  <text x="454" y="1319" font-size="14" fill="#a7f3d0">其余脚本按需跑完就退</text>
+
+  <rect x="780" y="1215" width="320" height="130" rx="10" fill="rgba(120,53,15,0.30)" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="804" y="1267" font-size="34" font-weight="700" fill="#fcd34d">0 字节</text>
+  <text x="804" y="1297" font-size="14" fill="#fde68a">播放的视频流量</text>
+  <text x="804" y="1319" font-size="14" fill="#fde68a">完全不经过这台服务器</text>
+
+  <!-- 图例 -->
+  <line x1="92" y1="1400" x2="142" y2="1400" stroke="#94a3b8" stroke-width="2"/>
+  <text x="152" y="1405" font-size="14" fill="#94a3b8">入库流程（元数据）</text>
+
+  <line x1="322" y1="1400" x2="372" y2="1400" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="7,4"/>
+  <text x="382" y="1405" font-size="14" fill="#22d3ee">播放链路（请求 / 302 / 字节）</text>
+
+  <rect x="542" y="1388" width="50" height="20" rx="4" fill="none" stroke="#fbbf24" stroke-dasharray="6,3"/>
+  <text x="604" y="1405" font-size="14" fill="#fbbf24">服务器边界</text>
+
+  <text x="600" y="1452" text-anchor="middle" font-size="14" fill="#64748b">入库：夸克 → OpenList → strm 生成/同步 → Jellyfin　｜　播放：客户端 → nginx → 302 → 夸克 CDN</text>
+  <text x="600" y="1484" text-anchor="middle" font-size="15" fill="#475569">github.com/wenxixixi-miao/quark-jellyfin-strm</text>
+</svg>
