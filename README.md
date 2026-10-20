@@ -30,7 +30,9 @@
                                                                         nginx conf.d map 文件
 ```
 
-![数据流逻辑图](docs/architecture.svg)
+![数据流逻辑图](docs/architecture.png)
+
+<sub>矢量版：<code>docs/architecture.svg</code>（GitHub 不渲染仓库里的 SVG，所以 README 用 PNG）</sub>
 
 详细的分层职责、数据流和排障不变量见 [`docs/architecture.md`](docs/architecture.md)，
 踩过的坑见 [`docs/pitfalls.md`](docs/pitfalls.md)。
