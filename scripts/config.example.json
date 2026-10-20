@@ -1,0 +1,31 @@
+{
+  "openlist": {
+    "url": "http://127.0.0.1:5244",
+    "username": "admin",
+    "password": "填 OpenList 管理员密码"
+  },
+  "public_base": "https://quark.example.com/CHANGE_ME_PATH",
+  "jellyfin": {
+    "url": "http://127.0.0.1:8096",
+    "api_key": "填 Jellyfin API Key（控制台 → API 密钥）"
+  },
+  "tmdb_api_key": "填 TMDB v3 API Key",
+  "quark": {
+    "cli_dir": "~/.hermes/skills/quarkclouddrive"
+  },
+  "paths": {
+    "mount": "/夸克",
+    "autosave_dir": "自动转存",
+    "share_dir": "来自：分享",
+    "media": "/srv/media",
+    "scratch": "~/.cache/strm/scratch",
+    "state": "~/.cache/strm/state",
+    "nginx_map": "/etc/nginx/conf.d/jellyfin_strm_302.conf",
+    "tv_dirname": "剧集",
+    "movie_dirname": "电影"
+  },
+  "sync": {
+    "refresh": false,
+    "sleep": 0.25
+  }
+}

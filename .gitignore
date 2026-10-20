@@ -1,0 +1,9 @@
+# 本地跑真实配置（含密钥），绝不入库
+config.json
+__pycache__/
+*.pyc
+# 运行产物
+plan.json
+tmdb_final.json
+*.log
+.DS_Store

@@ -1,0 +1,10 @@
+# 定时任务样例（按自己路径改）
+# 说明：OUT 为空 = 静默；有输出说明真有变化或真出错。
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# 每 10 分钟：官方接口追更，有新增才重建 strm
+*/10 * * * * /opt/quark-jellyfin-strm/scripts/quark_official_pipeline.sh
+
+# 每 2 小时：兜底扫目录（手动塞进去的文件也能被发现）
+30 */2 * * * /opt/quark-jellyfin-strm/scripts/strm_sync_fallback.sh

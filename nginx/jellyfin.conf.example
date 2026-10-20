@@ -1,0 +1,59 @@
+# —— Jellyfin 反代 + 强制 302（整段丢进 sites-available/jellyfin.conf）——
+
+# 把客户端 WebSocket 的 api_key 查询参数转成 Jellyfin 12 要求的 Authorization 头
+map $arg_api_key $jf_ws_auth {
+    default "MediaBrowser Token=$arg_api_key";
+    ""      "";
+}
+
+server {
+    listen 443 ssl http2;
+    server_name jellyfin.example.com;
+
+    # 有的客户端会把整串 URL 当主机名填，导致路径变成 /https://host/xxx
+    location ~* "^/https?(%3a|:)/+([^/]+)(/.*)$" {
+        return 308 https://$host$3;
+    }
+
+    # 关键：strm 源强制 302 直连夸克（$strm_target 由 conf.d 里的 map 文件提供，
+    # 该 map 文件由 scripts/gen_strm_map.py 自动生成，一行一个 Jellyfin item id）
+    location ~* "^/videos/[0-9a-f]{32}/stream" {
+        if ($strm_target != "") {
+            add_header Access-Control-Allow-Origin *;
+            return 302 $strm_target;
+        }
+        proxy_pass http://127.0.0.1:8096;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+    }
+
+    location = /socket {
+        proxy_pass http://127.0.0.1:8096;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Authorization $jf_ws_auth;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8096;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_buffering off;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+        client_max_body_size 0;
+    }
+}

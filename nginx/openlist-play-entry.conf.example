@@ -1,0 +1,48 @@
+# —— OpenList 播放入口（放在 quark.example.com 这个 server 块里）——
+# 作用：给播放器/strm 一个「不需要登录、只能读」的 URL 前缀，
+#      同时在 OpenList 侧拿到 302 跳转，让视频字节直接从夸克 CDN 走。
+#
+# 两条规矩：
+#   1. location 正则里带 {} 必须整体加引号；
+#   2. Basic 头里的账号密码是 base64，别把明文写进配置：
+#        printf '%s' 'user:password' | base64
+#      建议用环境变量或 nginx 变量注入，别把结果提交进 git。
+
+server {
+    listen 443 ssl http2;
+    server_name quark.example.com;
+    # ssl_certificate ...（用 certbot 签，别手写路径）
+
+    # 私有播放前缀：/dav/ 免认证只读镜像。改成一串猜不到的随机字符串。
+    location /CHANGE_ME_PATH/ {
+        # 只放行播放用的 GET/HEAD；封掉 PROPFIND 目录遍历与 PUT/DELETE/MOVE 写操作
+        limit_except GET HEAD {
+            deny all;
+        }
+        proxy_pass http://127.0.0.1:5244/dav/;
+        proxy_set_header Authorization "Basic BASE64_OF_USER_PASSWORD";
+        proxy_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_buffering off;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+
+    # OpenList 自己的管理界面 / API
+    location / {
+        proxy_pass http://127.0.0.1:5244;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "";
+        client_max_body_size 0;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+}
