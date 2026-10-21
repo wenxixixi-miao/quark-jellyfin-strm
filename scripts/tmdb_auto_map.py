@@ -7,10 +7,10 @@
   1) 目录里视频文件 ≥6 成带集号特征（SxxExx / EPxx / 第N集 / 纯数字）→ 当剧集
      需要：TMDB 标题（中文名或原名）与目录名清理后**完全一致**
            且 本地最大集号 ≤ TMDB 总集数（skill 里的硬判据）
-     通过 → 写入 state/scratch 目录的 tmdb_final.json（plan_strm.py 下一轮自动接上）
+     通过 → 写入 tmdb_final.json（plan_strm.py 下一轮自动接上）
   2) 否则当电影（每个视频一个条目）
      需要：标题完全一致；同名多部时靠年份消歧，消不了就算拿不准交给人工
-     通过 → 写入 state 目录下的 movie_rules_auto.json（make_strm_hermes.py 合并使用）
+     通过 → 写入 /root/.state/movie_rules_auto.json（make_strm_hermes.py 合并使用）
 
 拿不准的一律不写，留给 /tmp/unknown_dirs.json 的提示走人工。
 
@@ -25,7 +25,7 @@ from cfg import (OL_URL, OL_USER, OL_PASS, PUBLIC_BASE, MOUNT, SRC_AUTOSAVE, SRC
 
 OL = OL_URL
 SRC = SRC_AUTOSAVE
-FINAL_PATH = os.path.join(SCRATCH_DIR, "tmdb_final.json")
+FINAL_PATH = os.path.join(STATE_DIR, "tmdb_final.json")
 MOVIE_RULES_PATH = os.path.join(STATE_DIR, "movie_rules_auto.json")
 SKIP_PATH = os.path.join(STATE_DIR, "tmdb_auto_skip.json")
 

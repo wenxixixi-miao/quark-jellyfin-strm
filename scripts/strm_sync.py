@@ -68,7 +68,7 @@ def build_temp():
                            capture_output=True, text=True, env=env, timeout=1800)
         if r.returncode != 0:
             raise RuntimeError(f"{script} 失败: {r.stderr[-500:]}")
-    # batch2 走的是媒体库常量，确认它读环境变量
+    # batch2 走的是 /srv/media 常量？确认它读环境变量
     n = sum(1 for _, _, fs in os.walk(TMP) for f in fs if f.endswith(".strm"))
     if n == 0:
         raise RuntimeError("临时目录没有生成任何 strm，中止")

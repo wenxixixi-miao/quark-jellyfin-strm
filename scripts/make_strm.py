@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""按 plan.json 生成 strm + nfo，写进媒体库目录
+"""按 plan.json 生成 strm + nfo，写进 /srv/media
 
 决策（2026-10-19）：
 - 认不出集号的 2 个文件（仙逆 SHIXIAN.mkv / 诡秘之主 SPE01）→ 跳过

@@ -16,7 +16,10 @@ JUNK = ("sample", "预告", "花絮", "花絮", "海报", "fanart", "poster", "t
 OL = OL_URL
 VID = (".mp4", ".mkv", ".avi", ".ts", ".m2ts", ".rmvb", ".flv", ".wmv", ".mov", ".mpg")
 MULTI_WORK = {"物语系列"}
-FINAL = json.load(open(os.path.join(SCRATCH_DIR, "tmdb_final.json")))
+_FINAL = os.path.join(STATE_DIR, "tmdb_final.json")
+if not os.path.exists(_FINAL):
+    raise SystemExit(f"找不到 TMDB 映射表 {_FINAL}")
+FINAL = json.load(open(_FINAL))
 
 def login():
     b = json.dumps({"username": OL_USER, "password": OL_PASS}).encode()
